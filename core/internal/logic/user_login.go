@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"cherry-disk/core/define"
 	"cherry-disk/core/helper"
 	"cherry-disk/core/internal/model"
 	"cherry-disk/core/internal/svc"
@@ -32,9 +33,23 @@ func (u *UserLogin) UserLogin(req *types.LoginReq) (*types.LoginRpl, error) {
 		return nil, err
 	}
 
+	//生成TOKEN
+	token, err := helper.TokenBuilder(user.ID, user.Identity, user.Name, define.TokenExpire)
+	if err != nil {
+		u.Logger.Error(fmt.Sprintf("%v用户 生成Token失败 err = ", req.Name), err)
+		return nil, err
+	}
+
+	//用于刷新TOKEN的TOKEN
+	refresht, err := helper.TokenBuilder(user.ID, user.Identity, user.Name, define.RefreshTokenExpire)
+	if err != nil {
+		u.Logger.Error(fmt.Sprintf("%v用户 生成RefreshToken失败 err = ", req.Name), err)
+		return nil, err
+	}
+
 	res := &types.LoginRpl{
-		Token:        "CherryNeko",
-		RefreshToken: "爱你呀，主人",
+		Token:        token,
+		RefreshToken: refresht,
 	}
 
 	return res, nil

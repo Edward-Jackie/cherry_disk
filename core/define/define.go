@@ -15,3 +15,6 @@ var CodeLength = 4
 
 // 单位s
 var CodeExpire = 300
+
+var TokenExpire = 3600
+var RefreshTokenExpire = 7200
