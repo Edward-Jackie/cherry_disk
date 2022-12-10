@@ -7,6 +7,7 @@ import (
 	"cherry-disk/core/internal/types"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,11 +27,18 @@ func NewUserRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 
 func (u *UserRegister) UserReg(req *types.UserRegisterRequest) (*types.UserRegisterReply, error) {
 
+	code, err := u.svcCtx.Rc.Get(req.Email).Result()
+	if req.Code != code {
+		err = errors.New(fmt.Sprintf("验证码不一致"))
+		u.Logger.Error(err)
+		return &types.UserRegisterReply{Message: err.Error()}, err
+	}
+
 	rows := u.svcCtx.Db.Where("name = ?", req.Name).Find(&model.UserBasic{}).RowsAffected
 	if rows >= 1 {
-		err := errors.New("用户名已存在")
+		err = errors.New(fmt.Sprintf("%v 用户名已存在", req.Name))
 		u.Logger.Error(err)
-		return &types.UserRegisterReply{Message: "已存在用户名"}, err
+		return &types.UserRegisterReply{Message: err.Error()}, err
 	}
 
 	user := &model.UserBasic{
@@ -40,7 +48,7 @@ func (u *UserRegister) UserReg(req *types.UserRegisterRequest) (*types.UserRegis
 		Email:    req.Email,
 	}
 
-	err := u.svcCtx.Db.Create(&user).Error
+	err = u.svcCtx.Db.Create(&user).Error
 	if err != nil {
 		u.Logger.Error("用户注册失败 err =", err)
 		return &types.UserRegisterReply{Message: "用户注册失败"}, err
