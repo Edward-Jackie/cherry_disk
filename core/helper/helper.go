@@ -3,12 +3,14 @@ package helper
 import (
 	"cherry-disk/core/define"
 	"crypto/md5"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jordan-wright/email"
 	uuid "github.com/satori/go.uuid"
 	"math/rand"
+	"net/smtp"
 	"time"
 )
 
@@ -30,13 +32,18 @@ func RandCode() string {
 	return code
 }
 
-func MailSendCode(mail, code string) {
+func MailSendCode(mail, code string) error {
 	e := email.NewEmail()
-	e.From = "Get <CherryNeko@edj.com>"
+	e.From = "Cherry Disk <iamyunjielai@163.com>"
 	e.To = []string{mail}
-	e.Subject = "验证码发送测试"
-	e.HTML = []byte("你的验证码为： <h1>" + code + "</h1>")
-	//e.SendWithTLS("stmp.edj.com:666", smtp.PlainAuth(""))
+	e.Subject = "Cherry Disk 验证码发送测试"
+	e.HTML = []byte("你的验证码为：<h1>" + code + "</h1>")
+	err := e.SendWithTLS("smtp.163.com:465", smtp.PlainAuth("", "iamyunjielai@163.com", define.MailPWD, "smtp.163.com"),
+		&tls.Config{InsecureSkipVerify: true, ServerName: "smtp.163.com"})
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // Token生成方法

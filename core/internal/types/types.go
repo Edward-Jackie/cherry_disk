@@ -202,6 +202,7 @@ type MailCodeSendRequest struct {
 }
 
 type MailCodeSendReply struct {
+	Message string `json:"message"`
 }
 
 type Request struct {

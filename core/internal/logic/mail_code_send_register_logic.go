@@ -32,7 +32,7 @@ func (l *MailCodeSendRegisterLogic) MailCodeSendRegister(req *types.MailCodeSend
 	if err != nil || cnt > 0 {
 		l.Logger.Error("邮箱注册报错 err=", err)
 		err = errors.New("该邮箱已被注册")
-		return nil, nil
+		return nil, err
 	}
 
 	codeTTL, err := l.svcCtx.Rc.TTL(req.Email).Result()
@@ -47,6 +47,11 @@ func (l *MailCodeSendRegisterLogic) MailCodeSendRegister(req *types.MailCodeSend
 	code := helper.RandCode()
 	l.svcCtx.Rc.Set(req.Email, code, time.Duration(define.CodeExpire)*time.Second)
 
-	return &types.MailCodeSendReply{}, nil
+	err = helper.MailSendCode(req.Email, code)
+	if err != nil {
+		return &types.MailCodeSendReply{Message: "验证码发送失败"}, err
+	}
+
+	return &types.MailCodeSendReply{Message: "验证码发送成功"}, nil
 
 }
