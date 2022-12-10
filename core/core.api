@@ -1,0 +1,27 @@
+//service core-api {
+//    @handler CoreHandler
+//    get /from/:name (Request) returns (Response)
+//
+////    用户登陆
+//    @handler UserLogin
+//    post /user/login (LoginReq) returns (LoginRpl)
+//}
+//
+//
+//type Request {
+//    Name string `path:"name,options=you|me"`
+//}
+//
+//type Response {
+//    Message string `json:"message"`
+//}
+//
+//type LoginReq struct {
+//    Name string `json:"name"`
+//    Password string `json:"password"`
+//}
+//
+//type LoginRpl struct {
+//    Token string `json:"token"`
+//    RefreshToken string `json:"refresh_token"`
+//}
