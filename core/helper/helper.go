@@ -6,12 +6,13 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/jordan-wright/email"
-	uuid "github.com/satori/go.uuid"
 	"math/rand"
 	"net/smtp"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/jordan-wright/email"
+	uuid "github.com/satori/go.uuid"
 )
 
 func Md5(s string) string {

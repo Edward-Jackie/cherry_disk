@@ -57,8 +57,9 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.Auth},
 			[]rest.Route{
 				{
-					Method: http.MethodPost,
-					Path:   "",
+					Method:  http.MethodGet,
+					Path:    "/neko",
+					Handler: CoreHandler(serverCtx),
 				},
 			}...,
 		),

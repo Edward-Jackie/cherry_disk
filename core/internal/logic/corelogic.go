@@ -26,6 +26,6 @@ func NewCoreLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CoreLogic {
 func (l *CoreLogic) Core(req *types.Request) (resp *types.Response, err error) {
 	// todo: add your logic here and delete this line
 
-	hey := &types.Response{Message: "Hello I'm CherryNeko ,Master💋"}
+	hey := &types.Response{Message: "Hello I'm CherryNeko🌸"}
 	return hey, err
 }
