@@ -13,7 +13,7 @@ import (
 )
 
 // var configFile = flag.String("f", "etc/core-api.yaml", "the config file")
-var configFile = flag.String("f", "/Users/edj/dev/go_project/projects/cherry-disk/core/etc/core-api.yaml", "the config file")
+var configFile = flag.String("f", "/Users/edj/dev/go_project/git_project/cherry_disk/core/etc/core-api.yaml", "the config file")
 
 func main() {
 	flag.Parse()

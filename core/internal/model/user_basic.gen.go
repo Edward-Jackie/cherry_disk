@@ -14,7 +14,7 @@ const TableNameUserBasic = "user_basic"
 
 // UserBasic mapped from table <user_basic>
 type UserBasic struct {
-	ID        int32          `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
+	ID        int            `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
 	Identity  string         `gorm:"column:identity" json:"identity"`
 	Name      string         `gorm:"column:name" json:"name"`
 	Password  string         `gorm:"column:password" json:"password"`
