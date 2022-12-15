@@ -17,7 +17,7 @@ type UserRepository struct {
 	ID                 int32          `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
 	Identity           string         `gorm:"column:identity" json:"identity"`
 	UserIdentity       string         `gorm:"column:user_identity" json:"user_identity"`
-	ParentID           int32          `gorm:"column:parent_id" json:"parent_id"`
+	ParentID           int64          `gorm:"column:parent_id" json:"parent_id"`
 	RepositoryIdentity string         `gorm:"column:repository_identity" json:"repository_identity"`
 	Ext                string         `gorm:"column:ext" json:"ext"` // 文件或文件夹类型
 	Name               string         `gorm:"column:name" json:"name"`

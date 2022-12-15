@@ -19,7 +19,7 @@ type RepositoryPool struct {
 	Hash      string         `gorm:"column:hash" json:"hash"` // 文件的唯一标识
 	Name      string         `gorm:"column:name" json:"name"`
 	Ext       string         `gorm:"column:ext" json:"ext"`   // 文件扩展名
-	Size      int32          `gorm:"column:size" json:"size"` // 文件大小
+	Size      int64          `gorm:"column:size" json:"size"` // 文件大小
 	Path      string         `gorm:"column:path" json:"path"` // 文件路径
 	CreatedAt time.Time      `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at" json:"updated_at"`
