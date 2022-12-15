@@ -67,7 +67,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: FileUploadHandler(serverCtx),
 				},
 				{
-					// todo
+					// TODO
 					// no tested
 					Method:  http.MethodPost,
 					Path:    "/user/repository/save",
