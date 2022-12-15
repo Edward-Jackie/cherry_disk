@@ -2,13 +2,19 @@ package helper
 
 import (
 	"cherry-disk/core/define"
+	"context"
 	"crypto/md5"
 	"crypto/tls"
 	"errors"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"net/smtp"
+	"net/url"
+	"path"
 	"time"
+
+	"github.com/tencentyun/cos-go-sdk-v5"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jordan-wright/email"
@@ -81,4 +87,29 @@ func AnalyzeToken(token string) (*define.UserClaim, error) {
 		return u, errors.New("Token is unavaliable")
 	}
 	return u, err
+}
+
+// 上传文件-腾讯云
+func UploadTX(r *http.Request) (string, error) {
+	u, _ := url.Parse(define.CosBucket)
+	b := &cos.BaseURL{BucketURL: u}
+	client := cos.NewClient(b, &http.Client{
+		Transport: &cos.AuthorizationTransport{
+			SecretID:  define.TencentSecretID,
+			SecretKey: define.TencentSecretKEY,
+		},
+	})
+
+	file, fileHeader, err := r.FormFile("file")
+	key := "cherry-disk/" + UUID() + path.Ext(fileHeader.Filename)
+
+	_, err = client.Object.Put(
+		context.Background(), key, file, nil,
+	)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return define.CosBucket + "/" + key, nil
 }

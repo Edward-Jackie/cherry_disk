@@ -1,6 +1,8 @@
 Name: core-api
 Host: 0.0.0.0
 Port: 8888
+TimeOut: 200000 #接口超时设置
+MaxBytes: 8388608 #API可接收数据长度  默认1048576=1MB
 
 Mysql:
   DataSource: "root:123456@tcp(localhost:3306)/neko?charset=utf8mb4&parseTime=True&loc=Local"

@@ -8,6 +8,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -42,10 +43,12 @@ func (u *UserRegister) UserReg(req *types.UserRegisterRequest) (*types.UserRegis
 	}
 
 	user := &model.UserBasic{
-		Identity: helper.UUID(),
-		Name:     req.Name,
-		Password: helper.Md5(req.Password),
-		Email:    req.Email,
+		Identity:    helper.UUID(),
+		Name:        req.Name,
+		Password:    helper.Md5(req.Password),
+		Email:       req.Email,
+		NowVolume:   0,
+		TotalVolume: 1073741824, //1G
 	}
 
 	err = u.svcCtx.Db.Create(&user).Error
