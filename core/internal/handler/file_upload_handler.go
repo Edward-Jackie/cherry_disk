@@ -84,7 +84,7 @@ func FileUploadHandler(svc *svc.ServiceContext) http.HandlerFunc {
 
 		req.Name = fileHeader.Filename
 		req.Ext = path.Ext(fileHeader.Filename)
-		req.Size = int32(fileHeader.Size)
+		req.Size = fileHeader.Size
 		req.Hash = hash
 		req.Path = filepath
 
