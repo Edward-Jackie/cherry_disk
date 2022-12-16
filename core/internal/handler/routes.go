@@ -67,23 +67,20 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: FileUploadHandler(serverCtx),
 				},
 				{
-					// TODO
-					// no tested
+					// TODO no tested
 					Method:  http.MethodPost,
 					Path:    "/user/repository/save",
 					Handler: UserRepositorySaveHandler(serverCtx),
 				},
 				{
-					// TODO
-					//no tested
+					// TODO no tested
 					Method:  http.MethodPost,
 					Path:    "/user/file/list",
 					Handler: UserFileListHandler(serverCtx),
 				},
 				{
 					//路径创建
-					// TODO
-					// no tested
+					// TODO no tested
 					Method:  http.MethodPost,
 					Path:    "/user/folder/create",
 					Handler: UserFolderCreateHandler(serverCtx),
@@ -100,6 +97,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/user/file/name/update",
 					Handler: UserFileNameUpdateHandler(serverCtx),
+				},
+				{
+					//路径列表
+					Method:  http.MethodPost,
+					Path:    "/user/folder/list",
+					Handler: UserFolderListHandler(serverCtx),
 				},
 			}...,
 		),
