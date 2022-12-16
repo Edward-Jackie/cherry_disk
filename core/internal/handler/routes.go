@@ -74,6 +74,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: UserRepositorySaveHandler(serverCtx),
 				},
 				{
+					// TODO
+					//no tested
 					Method:  http.MethodPost,
 					Path:    "/user/file/list",
 					Handler: UserFileListHandler(serverCtx),
