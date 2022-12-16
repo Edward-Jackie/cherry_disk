@@ -80,6 +80,27 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/user/file/list",
 					Handler: UserFileListHandler(serverCtx),
 				},
+				{
+					//路径创建
+					// TODO
+					// no tested
+					Method:  http.MethodPost,
+					Path:    "/user/folder/create",
+					Handler: UserFolderCreateHandler(serverCtx),
+				},
+				{
+					//创建个人仓库
+					Method:  http.MethodPost,
+					Path:    "/share/basic/create",
+					Handler: ShareBasicCreateHandler(serverCtx),
+				},
+
+				{
+					//文件改名
+					Method:  http.MethodPost,
+					Path:    "/user/file/name/update",
+					Handler: UserFileNameUpdateHandler(serverCtx),
+				},
 			}...,
 		),
 	)

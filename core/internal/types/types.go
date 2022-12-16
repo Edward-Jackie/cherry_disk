@@ -70,7 +70,7 @@ type ShareBasicDetailReply struct {
 
 type ShareBasicCreateRequest struct {
 	UserRepositoryIdentity string `json:"user_repository_identity"`
-	ExpiredTime            int    `json:"expired_time"`
+	ExpiredTime            int64  `json:"expired_time"`
 }
 
 type ShareBasicCreateReply struct {
@@ -107,6 +107,7 @@ type UserFileNameUpdateRequest struct {
 }
 
 type UserFileNameUpdateReply struct {
+	Message string `json:"message,omitempty"`
 }
 
 type UserFileListRequest struct {

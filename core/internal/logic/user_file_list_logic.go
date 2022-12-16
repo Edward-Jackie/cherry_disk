@@ -6,7 +6,6 @@ import (
 	"cherry-disk/core/internal/svc"
 	"cherry-disk/core/internal/types"
 	"context"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -40,19 +39,33 @@ func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest, identit
 	offset := (page - 1) * size
 
 	ur := new(model.UserRepository)
-	err = l.svcCtx.Db.Where("identity = ?", identity).First(&ur).Error
+	err = l.svcCtx.Db.Where("identity = ?", req.Identity).First(&ur).Error
 	if err != nil {
 		l.Logger.Error(err)
 		return
 	}
 
-	err = l.svcCtx.Db.Table("user_repository").
-		Where("parent_id = ? AND user_identity = ?", ur.ID, identity).
-		Select("user_repository.id, user_repository.identity, user_repository.repository_identity, user_repository.ext,"+
-			"user_repository.name, repository_pool.path, repository_pool.size").
-		Joins("left join repository_pool on user_repository.repository_identity = repository_pool.identity").
-		Where("user_repository.deleted_at = ? OR user_repository.deleted_at IS NULL LIMIT ?,?", time.Time{}.Format(define.Datetime), size, offset).
-		Find(&ur).Error
+	//err = l.svcCtx.Db.Table("user_repository").
+	//	Where("parent_id = ? AND identity = ?", ur.ID, identity).
+	//	Select("user_repository.id, user_repository.identity, user_repository.repository_identity, user_repository.ext,"+
+	//		"user_repository.name, repository_pool.path, repository_pool.size").
+	//	Joins("left join repository_pool on user_repository.repository_identity = repository_pool.identity").
+	//	Where("user_repository.deleted_at IS NULL ").
+	//	Where("LIMIT ? , ?", size, offset).
+	//	Find(&ur).Error
+
+	err = l.svcCtx.Db.Exec(" SELECT "+
+		"user_repository.id, user_repository.identity, user_repository.repository_identity, user_repository.ext,user_repository.name, repository_pool.path, repository_pool.size "+
+		"FROM `user_repository` "+
+		"left join repository_pool "+
+		"on user_repository.repository_identity = repository_pool.identity "+
+		"WHERE (parent_id = ? "+
+		"AND identity = ?)"+
+		" AND user_repository.deleted_at IS NULL  "+
+		"AND `user_repository`.`deleted_at` IS NULL "+
+		"AND `user_repository`.`id` = ? "+
+		"LIMIT ? , ? ", ur.ID, ur.Identity, ur.ID, size, offset).Find(&uf).Error
+
 	if err != nil {
 		l.Logger.Error(err)
 		return

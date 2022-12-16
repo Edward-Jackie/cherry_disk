@@ -19,7 +19,7 @@ type ShareBasic struct {
 	UserIdentity           string         `gorm:"column:user_identity" json:"user_identity"`
 	RepositoryIdentity     string         `gorm:"column:repository_identity" json:"repository_identity"`           // 公共池中的唯一标识
 	UserRepositoryIdentity string         `gorm:"column:user_repository_identity" json:"user_repository_identity"` // 用户池子中的唯一标识
-	ExpiredTime            int32          `gorm:"column:expired_time" json:"expired_time"`                         // 失效时间，单位秒, 【0-永不失效】
+	ExpiredTime            int64          `gorm:"column:expired_time" json:"expired_time"`                         // 失效时间，单位秒, 【0-永不失效】
 	ClickNum               int32          `gorm:"column:click_num" json:"click_num"`                               // 点击次数
 	CreatedAt              time.Time      `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt              time.Time      `gorm:"column:updated_at" json:"updated_at"`
