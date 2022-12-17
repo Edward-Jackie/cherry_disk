@@ -153,3 +153,20 @@ func CosPartUpload(r *http.Request) (string, error) {
 
 	return strings.Trim(resp.Header.Get("ETag"), "\""), nil
 }
+
+func CosPartUploadComplete(key, uploadId string, co []cos.Object) error {
+	u, _ := url.Parse(define.CosBucket)
+	b := &cos.BaseURL{BucketURL: u}
+	client := cos.NewClient(b, &http.Client{
+		Transport: &cos.AuthorizationTransport{
+			SecretID:  define.TencentSecretID,
+			SecretKey: define.TencentSecretKEY},
+	})
+
+	ops := &cos.CompleteMultipartUploadOptions{}
+	ops.Parts = append(ops.Parts, co...)
+	_, _, err := client.Object.CompleteMultipartUpload(
+		context.Background(), key, uploadId, ops,
+	)
+	return err
+}
