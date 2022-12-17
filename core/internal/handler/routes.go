@@ -99,6 +99,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: UserFileNameUpdateHandler(serverCtx),
 				},
 				{
+					//移动文件
+					Method:  http.MethodPost,
+					Path:    "/user/file/move",
+					Handler: UserFileMoveHandler(serverCtx),
+				},
+				{
 					//路径列表
 					Method:  http.MethodPost,
 					Path:    "/user/folder/list",

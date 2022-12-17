@@ -83,6 +83,7 @@ type UserFileMoveRequest struct {
 }
 
 type UserFileMoveReply struct {
+	Message string `json:"message,omitempty"`
 }
 
 type UserFileDeleteRequest struct {
