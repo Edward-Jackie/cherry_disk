@@ -1,17 +1,21 @@
 package helper
 
 import (
+	"bytes"
 	"cherry-disk/core/define"
 	"context"
 	"crypto/md5"
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"io"
 	"math/rand"
 	"net/http"
 	"net/smtp"
 	"net/url"
 	"path"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/tencentyun/cos-go-sdk-v5"
@@ -112,4 +116,40 @@ func UploadTX(r *http.Request) (string, error) {
 	}
 
 	return define.CosBucket + "/" + key, nil
+}
+
+func CosPartUpload(r *http.Request) (string, error) {
+	bk, err := url.Parse(define.CosBucket)
+	if err != nil {
+		return "", err
+	}
+	b := &cos.BaseURL{BucketURL: bk}
+	client := cos.NewClient(b, &http.Client{Transport: &cos.AuthorizationTransport{
+		SecretID:  define.TencentSecretID,
+		SecretKey: define.TencentSecretKEY,
+	}})
+
+	key := r.PostForm.Get("key")
+	uploadID := r.PostForm.Get("upload_id")
+	partNum, err := strconv.Atoi(r.PostForm.Get("part_num"))
+	if err != nil {
+		return "", err
+	}
+
+	file, _, err := r.FormFile("file")
+	if err != nil {
+		return "", err
+	}
+
+	buf := bytes.NewBuffer(nil)
+	io.Copy(buf, file)
+
+	resp, err := client.Object.UploadPart(
+		context.Background(), key, uploadID, partNum, bytes.NewReader(buf.Bytes()), nil,
+	)
+	if err != nil {
+		return "", err
+	}
+
+	return strings.Trim(resp.Header.Get("ETag"), "\""), nil
 }
