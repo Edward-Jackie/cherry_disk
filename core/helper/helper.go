@@ -2,6 +2,7 @@ package helper
 
 import (
 	"bytes"
+	"cherry-disk/core/common"
 	"cherry-disk/core/define"
 	"context"
 	"crypto/md5"
@@ -49,7 +50,7 @@ func MailSendCode(mail, code string) error {
 	e.To = []string{mail}
 	e.Subject = "Cherry Disk 验证码发送测试"
 	e.HTML = []byte("你的验证码为：<h1>" + code + "</h1>")
-	err := e.SendWithTLS("smtp.163.com:465", smtp.PlainAuth("", "iamyunjielai@163.com", define.MailPWD, "smtp.163.com"),
+	err := e.SendWithTLS("smtp.163.com:465", smtp.PlainAuth("", "iamyunjielai@163.com", common.Cfg.MailPwd, "smtp.163.com"),
 		&tls.Config{InsecureSkipVerify: true, ServerName: "smtp.163.com"})
 	if err != nil {
 		return err
@@ -99,8 +100,8 @@ func UploadTX(r *http.Request) (string, error) {
 	b := &cos.BaseURL{BucketURL: u}
 	client := cos.NewClient(b, &http.Client{
 		Transport: &cos.AuthorizationTransport{
-			SecretID:  define.TencentSecretID,
-			SecretKey: define.TencentSecretKEY,
+			SecretID:  common.Cfg.Bucket.TencentSecretId,
+			SecretKey: common.Cfg.Bucket.TencentSecretKey,
 		},
 	})
 
@@ -125,8 +126,8 @@ func CosPartUpload(r *http.Request) (string, error) {
 	}
 	b := &cos.BaseURL{BucketURL: bk}
 	client := cos.NewClient(b, &http.Client{Transport: &cos.AuthorizationTransport{
-		SecretID:  define.TencentSecretID,
-		SecretKey: define.TencentSecretKEY,
+		SecretID:  common.Cfg.Bucket.TencentSecretId,
+		SecretKey: common.Cfg.Bucket.TencentSecretKey,
 	}})
 
 	key := r.PostForm.Get("key")
@@ -159,8 +160,9 @@ func CosPartUploadComplete(key, uploadId string, co []cos.Object) error {
 	b := &cos.BaseURL{BucketURL: u}
 	client := cos.NewClient(b, &http.Client{
 		Transport: &cos.AuthorizationTransport{
-			SecretID:  define.TencentSecretID,
-			SecretKey: define.TencentSecretKEY},
+			SecretID:  common.Cfg.Bucket.TencentSecretId,
+			SecretKey: common.Cfg.Bucket.TencentSecretKey,
+		},
 	})
 
 	ops := &cos.CompleteMultipartUploadOptions{}

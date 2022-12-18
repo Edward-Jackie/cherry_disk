@@ -29,12 +29,12 @@ func FileUploadChunkCompleteHandler(svcCtx *svc.ServiceContext) http.HandlerFunc
 			httpx.Error(w, errors.New("已超出当前容量"))
 			return
 		}
-		l := logic.NewFileUploadChunkCompleteLogic(r.Context(), svcCtx)
-		resp, err := l.FileUploadChunkComplete(&req)
-		if err != nil {
-			httpx.Error(w, err)
-		} else {
-			httpx.OkJson(w, resp)
-		}
+		//l := logic.NewFileUploadChunkCompleteLogic(r.Context(), svcCtx)
+		//resp, err := l.FileUploadChunkComplete(&req)
+		//if err != nil {
+		//	httpx.Error(w, err)
+		//} else {
+		//	httpx.OkJson(w, resp)
+		//}
 	}
 }

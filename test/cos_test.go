@@ -1,7 +1,7 @@
 package test
 
 import (
-	"cherry-disk/core/define"
+	"cherry-disk/core/common"
 	"context"
 	"net/http"
 	"net/url"
@@ -12,12 +12,13 @@ import (
 
 // 文件上传测试
 func TestFileUploadByFilePath(t *testing.T) {
+	common.GetConfig()
 	u, _ := url.Parse("https://cherryneko-1312558494.cos.ap-nanjing.myqcloud.com")
 	b := &cos.BaseURL{BucketURL: u}
 	client := cos.NewClient(b, &http.Client{
 		Transport: &cos.AuthorizationTransport{
-			SecretID:  define.TencentSecretID,
-			SecretKey: define.TencentSecretKEY,
+			SecretID:  common.Cfg.Bucket.TencentSecretId,
+			SecretKey: common.Cfg.Bucket.TencentSecretKey,
 		},
 	})
 

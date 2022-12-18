@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cherry-disk/core/common"
 	"flag"
 	"fmt"
 
@@ -16,6 +17,9 @@ import (
 var configFile = flag.String("f", "/Users/edj/dev/go_project/git_project/cherry_disk/core/etc/core-api.yaml", "the config file")
 
 func main() {
+	//获取nacos配置
+	common.GetConfig()
+	//读取yaml配置
 	flag.Parse()
 
 	var c config.Config
