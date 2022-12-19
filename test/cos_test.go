@@ -3,6 +3,8 @@ package test
 import (
 	"cherry-disk/core/common"
 	"context"
+	"crypto/md5"
+	"fmt"
 	"io/ioutil"
 	"math"
 	"net/http"
@@ -103,4 +105,34 @@ func TestMergeFile(t *testing.T) {
 	}
 
 	file.Close()
+}
+
+// 校验一致性
+func TestCheckConsistencyOfFile(t *testing.T) {
+	f1, err := os.OpenFile("./mv/test.mp4", os.O_RDONLY, 0666)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	b1, err := ioutil.ReadAll(f1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	f2, err := os.OpenFile("wonderful_tonight.mp4", os.O_RDONLY, 0666)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	b2, err := ioutil.ReadAll(f2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	s1 := fmt.Sprintf("%x", md5.Sum(b1))
+	s2 := fmt.Sprintf("%x", md5.Sum(b2))
+
+	fmt.Println(s1)
+	fmt.Println(s2)
+
 }
