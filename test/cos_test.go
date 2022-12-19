@@ -3,6 +3,7 @@ package test
 import (
 	"cherry-disk/core/common"
 	"context"
+	"io/ioutil"
 	"math"
 	"net/http"
 	"net/url"
@@ -70,10 +71,36 @@ func TestGeneralChunkFile(t *testing.T) {
 	file.Close()
 }
 
-// 文件合并 - 校验一致性
-func TestChunkFile(t *testing.T) {
-	//file, err := os.OpenFile("test.mp4", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModePerm)
-	//if err != nil {
-	//	t.Fatal(err)
-	//}
+// 文件合并
+func TestMergeFile(t *testing.T) {
+	file, err := os.OpenFile("wonderful_tonight.mp4", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModePerm)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// 获取源文件的信息 用于组建合并文件
+	fileInfo, err := os.Stat("./mv/test.mp4")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	chunkNum := math.Ceil(float64(fileInfo.Size()) / float64(chunkSize))
+
+	// 分片个数
+	for i := 0; i < int(chunkNum); i++ {
+		f, err := os.OpenFile("./chunks/"+strconv.Itoa(i)+".chunk", os.O_RDONLY, os.ModePerm)
+		if err != nil {
+			t.Fatal()
+		}
+
+		b, err := ioutil.ReadAll(f)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		file.Write(b)
+		f.Close()
+	}
+
+	file.Close()
 }
